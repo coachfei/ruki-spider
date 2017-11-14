@@ -29,6 +29,7 @@ from tqdm import tqdm
 import requests
 import time
 from datetime import datetime
+from shutil import copyfile
 
 # 版本号和名字
 APP_NAME = "ruki_ddpai"
@@ -36,6 +37,9 @@ APP_VERSION = "0.01"
 
 
 def merge_items(old_name, new_name):
+    # 备份就结果
+    bak_name = "tmp/{}.json".format(datetime.now().strftime("%Y%m%d"))
+    copyfile(old_name, bak_name)
     # 将旧结果和新结果合并
     with open(old_name, "r") as old_file:
         old_items = json.load(old_file)
@@ -55,11 +59,10 @@ def merge_items(old_name, new_name):
                 else:
                     print("index found: {}".format(new_item["id"]))
             print("index not found sum: {}".format(not_found_total))
-    ret_name = "ddpai/{}.json".format(datetime.now().isoformat()[:19])
-    with open(ret_name, "w") as ret_file:
-        json.dump(old_items, ret_file)
-        print("merge items save to {}".format(ret_name))
-    return ret_name
+    # 覆盖旧结果
+    with open(old_name, "w") as old_file:
+        print("dumping {} items into {}".format(len(old_items), old_name))
+        json.dump(old_items, old_file)
 
 def generate_index(old_name):
     ret = {}
@@ -204,9 +207,9 @@ def merge(o, n):
         print("result files not exist")
 
 
-@cli.command(help="test new feature")
+@cli.command(help="test new command")
 def test():
-    ret = datetime.now().isoformat()[:19]
+    ret = datetime.now().strftime("%Y%m%d")
     print(ret)
 
 

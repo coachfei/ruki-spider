@@ -99,3 +99,15 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# download
+ddpai
+360
+goluk
+letv
+
+# download exclude
+!ddpai/ddpai.py
+!360/360.py
+!goluk/goluk.py
+!letv/letv.py
