@@ -102,12 +102,12 @@ ENV/
 
 # download
 ddpai
-360
+s360
 goluk
 letv
 
 # download exclude
 !ddpai/ddpai.py
-!360/360.py
+!s360/s360.py
 !goluk/goluk.py
 !letv/letv.py

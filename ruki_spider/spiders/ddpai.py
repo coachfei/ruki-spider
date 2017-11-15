@@ -6,12 +6,14 @@ class DdpaiSpider(scrapy.Spider):
     name = "ddpai"
 
     def start_requests(self):
-        for i in range(300000):
+        for i in range(301500):
             url = 'http://app.ddpai.com/d/api/v1/storage/res/fragment/{}'.format(i);
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
         jsonresponse = json.loads(response.text)
+        if len(jsonresponse["resobjs"]) == 0 or jsonresponse["resobjs"][0] is None:
+            return
         if jsonresponse["resobjs"][0]["type"] == 2:
             yield {
                 "id": jsonresponse["id"],

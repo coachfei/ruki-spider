@@ -8,7 +8,7 @@
 ## 使用方法
 ### DDPAI
 #### 爬取数据
-从目标网站爬取索引信息并保存 `scrapy runspider ddpai_spider.py -o ddpai/tmp/new.json`
+从目标网站爬取索引信息并保存 `scrapy crawl ddpai -o ddpai/tmp/new.json`
 #### 合并数据
 刚爬取的索引信息合并到旧索引 `python3 ddpai/ddpai.py merge -o ddpai/tmp/ddpai.json -n ddpai/tmp/new.json`
 #### 下载媒体
@@ -18,8 +18,11 @@
 
 ### 360
 #### 爬取数据
-从目标网站爬取索引信息并保存 `scrapy runspider 360_spider.py -o 360/tmp/360.json`
+从目标网站爬取索引信息并保存 `scrapy crawl s360 -o s360/tmp/new.json`
 
 ### GOLUK
 #### 爬取数据
-从目标网站爬取索引信息并保存 `scrapy runspider goluk_spider.py -o goluk.json`
+从目标网站爬取索引信息并保存 `scrapy crawl goluk -o goluk/tmp/new.json`
+
+### LETV
+#### 未完成
