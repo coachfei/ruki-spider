@@ -167,7 +167,7 @@ def cli(debug):
 
 @cli.command(help="generate videos for each folder")
 @click.option("-o", help="old result")
-def generate():
+def generate(o):
     if os.path.exists(o):
         # 生成索引字典，键是“t类型ID_c评论数_l喜欢数”，值是视频信息
         item_dict = generate_index(o)

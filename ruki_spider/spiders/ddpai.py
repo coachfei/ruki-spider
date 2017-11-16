@@ -6,23 +6,70 @@ class DdpaiSpider(scrapy.Spider):
     name = "ddpai"
 
     def start_requests(self):
-        for i in range(301500):
+        for i in range(301510):
             url = 'http://app.ddpai.com/d/api/v1/storage/res/fragment/{}'.format(i);
             yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
         jsonresponse = json.loads(response.text)
-        if len(jsonresponse["resobjs"]) == 0 or jsonresponse["resobjs"][0] is None:
+        # 媒体信息判空
+        if "resobjs" not in jsonresponse:
+            # print("no resobjs")
             return
-        if jsonresponse["resobjs"][0]["type"] == 2:
-            yield {
-                "id": jsonresponse["id"],
-                "des": jsonresponse["des"],
-                "coords": [jsonresponse["longitude"], jsonresponse["latitude"]],
-                "location": jsonresponse["location"],
-                "path": jsonresponse["resobjs"][0]["remotePath"],
-                "comments": jsonresponse["commentCount"],
-                "views": jsonresponse["showViewedCount"],
-                "likes": jsonresponse["favCount"],
-                "type": jsonresponse["typeId"]
-            }
+        ress = jsonresponse["resobjs"]
+        if not ress:
+            # print("empty resobjs")
+            return
+        res = ress[0]
+        if "type" not in res or res["type"] != 2:
+            # print("resobj type not match")
+            return
+        # 其他信息判空
+        if "id" not in jsonresponse:
+            # print("no item id")
+            return
+        item_id = jsonresponse["id"]
+        # 描述
+        des = ""
+        if "des" in jsonresponse:
+            des = jsonresponse["des"]
+        # 经纬度
+        coords = []
+        if "longitude" in jsonresponse and "latitude" in jsonresponse:
+            coords = [jsonresponse["longitude"], jsonresponse["latitude"]]
+        # 位置
+        location = ""
+        if "location" in jsonresponse:
+            location = jsonresponse["location"]
+        # 媒体路径
+        path = ""
+        if "remotePath" in res:
+            path = res["remotePath"]
+        # 评论数
+        comments = 0
+        if "commentCount" in jsonresponse:
+            comments = jsonresponse["commentCount"]
+        # 浏览数
+        views = 0
+        if "showViewedCount" in jsonresponse:
+            views = jsonresponse["showViewedCount"]
+        # 赞数
+        likes = 0
+        if "favCount" in jsonresponse:
+            likes = jsonresponse["favCount"]
+        # 类型
+        item_type = ""
+        if "typeId" in jsonresponse:
+            item_type = jsonresponse["typeId"]
+
+        yield {
+            "id": item_id,
+            "des": des,
+            "coords": coords,
+            "location": location,
+            "path": path,
+            "comments": comments,
+            "views": views,
+            "likes": likes,
+            "type": item_type
+        }

@@ -7,8 +7,8 @@ class S360Spider(scrapy.Spider):
     name = "s360"
 
     def start_requests(self):
-        # for i in range(700000, 1336300):
-        for i in range(1336300, 1336400):
+        # for i in range(1336300, 1336400):
+        for i in range(1336400):
             url = 'http://wap.che.360.cn/share/h5/detail/{}'.format(i)
             yield scrapy.Request(url=url, callback=self.parse)
 
