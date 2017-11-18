@@ -64,12 +64,27 @@ def merge_items(old_name, new_name):
         print("dumping {} items into {}".format(len(old_items), old_name))
         json.dump(old_items, old_file)
 
+
+def prune_items(old_name):
+    new_items = []
+    with open(old_name, "r") as data_file:
+        items = json.load(data_file)
+        for i, item in enumerate(items):
+            if not item["path"]:
+                continue
+            new_items.append(item)
+    with open(old_name, "w") as data_file:
+        json.dump(new_items, data_file)
+
+
 def generate_index(old_name):
     ret = {}
     # 根据数据文件分拣索引文件， ddpai.jsons是scrapy的文件，数组，元素是视频信息
     with open(old_name, "r") as data_file:
         items = json.load(data_file)
         for i, item in enumerate(items):
+            if not item["path"]:
+                continue
             typeId = item["type"]
             comments = item["comments"]
             likes = item["likes"]
@@ -205,6 +220,16 @@ def merge(o, n):
         merge_items(o, n)
     else:
         print("result files not exist")
+
+
+@cli.command(help="prune invalid result")
+@click.option("-o", help="old result")
+def prune(o):
+    if os.path.exists(o):
+        # 清除无效的结果
+        prune_items(o)
+    else:
+        print("result file not exist")
 
 
 @cli.command(help="test new command")

@@ -28,7 +28,11 @@ class DdpaiSpider(scrapy.Spider):
         if "id" not in jsonresponse:
             # print("no item id")
             return
+        # 媒体路径
+        if "remotePath" not in res or not res["remotePath"]:
+            return
         item_id = jsonresponse["id"]
+        path = res["remotePath"]
         # 描述
         des = ""
         if "des" in jsonresponse:
@@ -41,10 +45,6 @@ class DdpaiSpider(scrapy.Spider):
         location = ""
         if "location" in jsonresponse:
             location = jsonresponse["location"]
-        # 媒体路径
-        path = ""
-        if "remotePath" in res:
-            path = res["remotePath"]
         # 评论数
         comments = 0
         if "commentCount" in jsonresponse:
