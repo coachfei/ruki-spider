@@ -35,10 +35,9 @@ from shutil import copyfile
 APP_NAME = "ruki_ddpai"
 APP_VERSION = "0.01"
 
-
 def merge_items(old_name, new_name):
     # 备份就结果
-    bak_name = "tmp/{}.json".format(datetime.now().strftime("%Y%m%d"))
+    bak_name = "ddpai/tmp/{}.json".format(datetime.now().strftime("%Y%m%d"))
     copyfile(old_name, bak_name)
     # 将旧结果和新结果合并
     with open(old_name, "r") as old_file:
@@ -102,7 +101,7 @@ def save_index(item_dict):
     #保存索引文件到文件夹下
     for key, group in item_dict.items():
         # 检查文件夹路径
-        folder = "ddpai_{}".format(key)
+        folder = "ddpai/ddpai_{}".format(key)
         filepath = "{}/index.json".format(folder)
         if not os.path.exists(folder):
             os.mkdir(folder)

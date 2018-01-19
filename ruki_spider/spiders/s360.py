@@ -7,8 +7,15 @@ class S360Spider(scrapy.Spider):
     name = "s360"
 
     def start_requests(self):
-        # for i in range(1336300, 1336400):
-        for i in range(1336400):
+        # 默认值是0，从上一次爬取数据里读取计数器
+        count = 0
+        with open("s360/tmp/s360.json", "r") as new_file:
+            new_items = json.load(new_file)
+            sorted(new_items, key=lambda item: item["id"])
+            if len(new_items) > 0:
+                count = int(new_items[-1]["id"])
+        # 开始爬取数据
+        for i in range(count + 1, count + 10):
             url = 'http://wap.che.360.cn/share/h5/detail/{}'.format(i)
             yield scrapy.Request(url=url, callback=self.parse)
 

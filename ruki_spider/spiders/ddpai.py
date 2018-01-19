@@ -1,12 +1,20 @@
 import scrapy
 import json
-
+import os
 
 class DdpaiSpider(scrapy.Spider):
     name = "ddpai"
 
     def start_requests(self):
-        for i in range(301510):
+        # 默认值是0，从上一次爬取数据里读取计数器
+        count = 0
+        with open("ddpai/tmp/ddpai.json", "r") as new_file:
+            new_items = json.load(new_file)
+            sorted(new_items, key=lambda item: item["id"])
+            if len(new_items) > 0:
+                count = int(new_items[-1]["id"])
+        # 开始爬取数据
+        for i in range(count + 1, count + 10):
             url = 'http://app.ddpai.com/d/api/v1/storage/res/fragment/{}'.format(i);
             yield scrapy.Request(url=url, callback=self.parse)
 
