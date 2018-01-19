@@ -129,7 +129,7 @@ def generate_videos(item_dict):
     # 遍历文件夹下载媒体文件
     for key, group in item_dict.items():
         total = len(group)
-        folder = "ddpai_{}".format(key)
+        folder = "ddpai/ddpai_{}".format(key)
         for i, (itemId, item) in enumerate(group.items()):
             remote_src = item["path"]
             des_src = "{}/{}.mp4".format(folder, itemId)
@@ -146,7 +146,7 @@ def count_videos(item_dict):
     all_total = 0
     for key, group in item_dict.items():
         # 检查文件夹路径
-        folder = "ddpai_{}".format(key)
+        folder = "ddpai/ddpai_{}".format(key)
         if not os.path.exists(folder):
             print("folder {} does not exists".format(folder))
             continue

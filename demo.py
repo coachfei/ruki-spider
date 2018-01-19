@@ -24,6 +24,7 @@
 
 import click
 import os
+import time
 
 # 版本号和名字
 APP_NAME = "ruki_spider"
@@ -45,20 +46,38 @@ def cli(debug):
     pass
 
 
-@cli.command(help="ddpai spider")
-def ddpai():
-    os.remove("ddpai/tmp/new.json")
-    os.system("scrapy crawl ddpai -o ddpai/tmp/new.json")
-    os.system("python3 ddpai/ddpai.py merge -o ddpai/tmp/ddpai.json -n ddpai/tmp/new.json")
-    os.system("python3 ddpai/ddpai.py generate -o ddpai/tmp/ddpai.json")
+@cli.command(help="ddpai")
+@click.option("--crawl", is_flag=True, default=False)
+@click.option("--download", is_flag=True, default=False)
+def ddpai(crawl, download):
+    if crawl:
+        while True:
+            try:
+                os.remove("ddpai/tmp/new.json")
+                os.system("scrapy crawl ddpai -o ddpai/tmp/new.json")
+                os.system("python3 ddpai/ddpai.py merge -o ddpai/tmp/ddpai.json -n ddpai/tmp/new.json")
+            except:
+                pass
+            time.sleep(15)
+    if download:
+        os.system("python3 ddpai/ddpai.py generate -o ddpai/tmp/ddpai.json")
 
 
 @cli.command(help="s360 spider")
-def s360(o):
-    os.remove("s360/tmp/new.json")
-    os.system("scrapy crawl s360 -o s360/tmp/new.json")
-    os.system("python3 s360/s360.py merge -o s360/tmp/s360.json -n s360/tmp/new.json")
-    os.system("python3 s360/s360.py generate -o s360/tmp/s360.json")
+@click.option("--crawl", is_flag=True, default=False)
+@click.option("--download", is_flag=True, default=False)
+def s360(crawl, download):
+    if crawl:
+        while True:
+            try:
+                os.remove("s360/tmp/new.json")
+                os.system("scrapy crawl s360 -o s360/tmp/new.json")
+                os.system("python3 s360/s360.py merge -o s360/tmp/s360.json -n s360/tmp/new.json")
+            except:
+                pass
+            time.sleep(15)
+    if download:
+        os.system("python3 s360/s360.py generate -o s360/tmp/s360.json")
 
 
 if __name__ == "__main__":
