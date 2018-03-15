@@ -31,12 +31,9 @@ import time
 from datetime import datetime
 from shutil import copyfile
 
-# 版本号和名字
-APP_NAME = "ruki_ddpai"
-APP_VERSION = "0.01"
-
+DDPAI_INDEX_DIR = "ddpai/tmp"
 def merge_items(old_name, new_name):
-    # 备份就结果
+    # 备份上一次索引
     bak_name = "ddpai/tmp/{}.json".format(datetime.now().strftime("%Y%m%d"))
     copyfile(old_name, bak_name)
     # 将旧结果和新结果合并
@@ -163,15 +160,7 @@ def count_videos(item_dict):
     print("summary: {}/{}".format(all_count, all_total))
 
 
-def print_version(ctx, param, value):
-    if not value or ctx.resilient_parsing:
-        return
-    click.echo("{} v{}".format(APP_NAME, APP_VERSION))
-    ctx.exit()
-
-
 @click.group()
-@click.option("--version", is_flag=True, callback=print_version, expose_value=False, is_eager=True)
 @click.option("--debug", is_flag=True, default=False)
 def cli(debug):
     if debug:
@@ -229,12 +218,6 @@ def prune(o):
         prune_items(o)
     else:
         print("result file not exist")
-
-
-@cli.command(help="test new command")
-def test():
-    ret = datetime.now().strftime("%Y%m%d")
-    print(ret)
 
 
 if __name__ == "__main__":

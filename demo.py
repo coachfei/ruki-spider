@@ -53,7 +53,8 @@ def ddpai(crawl, download):
     if crawl:
         while True:
             try:
-                os.remove("ddpai/tmp/new.json")
+                if os.path.exists("ddpai/tmp/new.json"):
+                    os.remove("ddpai/tmp/new.json")
                 os.system("scrapy crawl ddpai -o ddpai/tmp/new.json")
                 os.system("python3 ddpai/ddpai.py merge -o ddpai/tmp/ddpai.json -n ddpai/tmp/new.json")
             except:
@@ -70,7 +71,8 @@ def s360(crawl, download):
     if crawl:
         while True:
             try:
-                os.remove("s360/tmp/new.json")
+                if os.path.exists("s360/tmp/new.json"):
+                    os.remove("s360/tmp/new.json")
                 os.system("scrapy crawl s360 -o s360/tmp/new.json")
                 os.system("python3 s360/s360.py merge -o s360/tmp/s360.json -n s360/tmp/new.json")
             except:
