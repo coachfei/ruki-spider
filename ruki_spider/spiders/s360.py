@@ -15,7 +15,7 @@ class S360Spider(scrapy.Spider):
             if len(new_items) > 0:
                 count = int(new_items[-1]["id"])
         # 开始爬取数据
-        for i in range(count + 1, count + 1000):
+        for i in range(count + 1, count + 10000):
             url = 'http://wap.che.360.cn/share/h5/detail/{}'.format(i)
             yield scrapy.Request(url=url, callback=self.parse)
 

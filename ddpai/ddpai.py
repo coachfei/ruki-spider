@@ -133,8 +133,8 @@ def generate_videos(item_dict):
             if not os.path.exists(des_src):
                 print("[{}][{}/{}] downloading {} to {}".format(datetime.now(), i, total, remote_src, des_src))
                 download_video(remote_src, des_src)
-            else:
-                print("[{}][{}/{}] {} already exists".format(datetime.now(),i, total, des_src))
+            # else:
+            #   print("[{}][{}/{}] {} already exists".format(datetime.now(),i, total, des_src))
 
 
 def count_videos(item_dict):
