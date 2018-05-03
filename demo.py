@@ -25,6 +25,7 @@
 import click
 import os
 import time
+from shutil import copyfile
 
 # 版本号和名字
 APP_NAME = "ruki_spider"
@@ -49,7 +50,8 @@ def cli(debug):
 @cli.command(help="ddpai")
 @click.option("--crawl", is_flag=True, default=False)
 @click.option("--download", is_flag=True, default=False)
-def ddpai(crawl, download):
+@click.option("--backup", is_flag=True, default=False)
+def ddpai(crawl, download, backup):
     if crawl:
         while True:
             try:
@@ -62,12 +64,18 @@ def ddpai(crawl, download):
             time.sleep(15)
     if download:
         os.system("python3 ddpai/ddpai.py generate -o ddpai/tmp/ddpai.json")
+    if backup:
+        copyfile('raw/ddpai/crashme/index.json', 'raw/ddpai/crashme/index.bak')
+        copyfile('raw/ddpai/crashit/index.json', 'raw/ddpai/crashit/index.bak')
+        copyfile('raw/ddpai/nocrash/index.json', 'raw/ddpai/nocrash/index.bak')
+        os.system("python3 ddpai/ddpai.py backup -o ddpai/tmp/ddpai.json")
 
 
-@cli.command(help="s360 spider")
+@cli.command(help="s360")
 @click.option("--crawl", is_flag=True, default=False)
 @click.option("--download", is_flag=True, default=False)
-def s360(crawl, download):
+@click.option("--backup", is_flag=True, default=False)
+def s360(crawl, download, backup):
     if crawl:
         while True:
             try:
@@ -80,6 +88,11 @@ def s360(crawl, download):
             time.sleep(15)
     if download:
         os.system("python3 s360/s360.py generate -o s360/tmp/s360.json")
+    if backup:
+        copyfile('raw/s360/crashme/index.json', 'raw/s360/crashme/index.bak')
+        copyfile('raw/s360/crashit/index.json', 'raw/s360/crashit/index.bak')
+        copyfile('raw/s360/nocrash/index.json', 'raw/s360/nocrash/index.bak')
+        os.system("python3 s360/s360.py backup -o s360/tmp/s360.json")
 
 
 if __name__ == "__main__":

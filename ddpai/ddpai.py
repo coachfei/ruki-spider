@@ -156,8 +156,19 @@ def count_videos(item_dict):
                 count = count + 1
                 all_count = all_count + 1
         print("{} {}: {}/{}".format("*" if count == total else "!", folder, count, total))
-
     print("summary: {}/{}".format(all_count, all_total))
+
+
+def backup_note(item_dict):
+    for key, group in item_dict.items():
+        # 检查文件夹路径
+        old_name = "ddpai/ddpai_{}/note.json".format(key)
+        bak_name = "ddpai/ddpai_{}/note.bak".format(key)
+        if not os.path.exists(old_name):
+            print("note file {} does not exists".format(old_name))
+            continue
+        print("copy {} to {}".format(old_name, bak_name))
+        copyfile(old_name, bak_name)
 
 
 @click.group()
@@ -216,6 +227,18 @@ def prune(o):
     if os.path.exists(o):
         # 清除无效的结果
         prune_items(o)
+    else:
+        print("result file not exist")
+
+
+@cli.command(help="backup note file")
+@click.option("-o", help="old result")
+def backup(o):
+    if os.path.exists(o):
+        # 生成索引字典，键是“t类型ID_c评论数_l喜欢数”，值是视频信息
+        item_dict = generate_index(o)
+        # 备份note文件
+        backup_note(item_dict)
     else:
         print("result file not exist")
 
